@@ -76,7 +76,8 @@ public class GameplayController : MonoBehaviour
             Vector2 ropeDirection = (newPosition - grapplePointPosition).normalized;
             newPosition = grapplePointPosition + ropeDirection * grappleManager.ropeLength;
             this.playerPhysicsTransform.position = new Vector3(newPosition.x, newPosition.y, this.playerPhysicsTransform.position.z);
-            
+            grappleManager.UpdateRopeTransform(newPosition);
+
             var newDirection = new Vector2(-ropeDirection.y, ropeDirection.x);
             if (Vector2.Dot(newDirection, this.body.velocity) < 0)
             {
