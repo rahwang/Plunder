@@ -18,6 +18,8 @@ public class GameplayController : MonoBehaviour
     public float playerVelocityMax = 5.0f;
     public float playerRadius = 1.0f;
 
+    public GrappleManager grappleManager;
+
     private bool isJumpRequested = false;
     private Vector3 playerPositionPrevious = Vector3.zero;
     private bool isPlayerPositionPreviousInitialized = false;
@@ -44,6 +46,11 @@ public class GameplayController : MonoBehaviour
         if (Input.GetButtonDown(inputNameJump) && isGrounded)
         {
             isJumpRequested = true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.F)) {
+
+            grappleManager.ToggleGrapple();
         }
     }
 
