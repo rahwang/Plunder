@@ -188,7 +188,7 @@ public class GameplayController : MonoBehaviour
         cutlass.SetActive(isCutlassRequested);
         if (isCutlassRequested && !isCutlassAudioPlaying)
         {
-            isCutlassRequested = true;
+            isCutlassAudioPlaying = true;
             audioController.playCutlass();
         }
         isCutlassRequested = false;
