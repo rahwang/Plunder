@@ -20,6 +20,9 @@ public class SailorController : MonoBehaviour
         {
             gameObject.SetActive(false);
             Destroy(gameObject);
+            StateManager.numEnemiesAlive--;
+            
+            Score.Kill(2);
         }
     }
 }
