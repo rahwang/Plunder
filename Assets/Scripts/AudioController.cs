@@ -9,12 +9,11 @@ public class AudioController : MonoBehaviour
     public AudioClip yarrClip;
     public AudioClip yarrrClip;
     
-    public AudioSource mainSource;
     public AudioSource auxSource;
 
     void Update() {
         var x = Random.value;
-        if (x > 0.995f) {
+        if (x > 0.997f) {
             playYar();
         }
     }
@@ -32,7 +31,7 @@ public class AudioController : MonoBehaviour
         this.auxSource.Play();
     }
 
-    void playCutlass()
+    public void playCutlass()
     {
         this.auxSource.clip = cutlassClip;
         this.auxSource.Play();

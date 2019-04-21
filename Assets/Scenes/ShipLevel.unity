@@ -1412,6 +1412,12 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!82 &249764189 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 7266663172877217952, guid: 8bbadaaf3a768f242bfca2edf045fd10,
+    type: 3}
+  m_PrefabInstance: {fileID: 457180637}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &268576675
 GameObject:
   m_ObjectHideFlags: 0
@@ -2991,6 +2997,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7266663173678050651, guid: 8bbadaaf3a768f242bfca2edf045fd10,
+        type: 3}
+      propertyPath: auxSource
+      value: 
+      objectReference: {fileID: 249764189}
+    - target: {fileID: 7266663173678050651, guid: 8bbadaaf3a768f242bfca2edf045fd10,
+        type: 3}
+      propertyPath: cutlassClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 544d5f84c4d27d743b6b46cd42a8fa47, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8bbadaaf3a768f242bfca2edf045fd10, type: 3}
 --- !u!1001 &457835806
@@ -7139,6 +7155,11 @@ PrefabInstance:
       propertyPath: playerRadius
       value: 0.45
       objectReference: {fileID: 0}
+    - target: {fileID: 6656972208124051593, guid: bd1bf912a9c987840ac8b486ce964c7e,
+        type: 3}
+      propertyPath: audioController
+      value: 
+      objectReference: {fileID: 1267338971}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd1bf912a9c987840ac8b486ce964c7e, type: 3}
 --- !u!4 &1016159240 stripped
@@ -9112,6 +9133,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1267338971 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7266663173678050651, guid: 8bbadaaf3a768f242bfca2edf045fd10,
+    type: 3}
+  m_PrefabInstance: {fileID: 457180637}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bbeefc21420a2d41bbd2804ad401065, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1273752760
 GameObject:
   m_ObjectHideFlags: 0
