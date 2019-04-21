@@ -19,7 +19,6 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         Vector3 cameraPositionNext = new Vector3(
             playerTransform.position.x,
             playerTransform.position.y,
@@ -28,16 +27,4 @@ public class CameraController : MonoBehaviour
 
         this.transform.position = cameraPositionNext;
     }
-
-    void playWin()
-    {
-        // stop playing background music
-        // play win
-    }
-    void playDeath()
-    {
-        // stop playing background music
-        // play death 1 or 2
-    }
-
 }
