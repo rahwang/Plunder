@@ -55,8 +55,11 @@ public class GameplayController : MonoBehaviour
         {
             isJumpRequested = true;
         }
-        if (Input.GetKeyDown(KeyCode.F)) {
-
+        if (Input.GetKeyDown(KeyCode.F) || Input.GetMouseButtonDown(0))
+        {
+            grappleManager.ToggleGrapple();
+        }
+        if (Input.GetMouseButtonUp(0) && grappleManager.isGrappling) {
             grappleManager.ToggleGrapple();
         }
         if (Input.GetButton(inputNameFire1))
