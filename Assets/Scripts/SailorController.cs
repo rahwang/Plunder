@@ -20,7 +20,7 @@ public class SailorController : MonoBehaviour
         {
             gameObject.transform.rotation = Quaternion.Euler(0,0,90);
             Vector3 oldPos = gameObject.transform.position;
-            oldPos.y -= 0.5f;
+            oldPos.y -= 0.2f;
             gameObject.transform.position = oldPos;
             gameObject.GetComponent<Rigidbody2D>().simulated = false;
             gameObject.GetComponent<CircleCollider2D>().enabled = false;
