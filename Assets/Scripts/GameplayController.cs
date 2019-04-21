@@ -20,6 +20,8 @@ public class GameplayController : MonoBehaviour
     public float playerVelocityMax = 5.0f;
     public float playerRadius = 1.0f;
 
+    public GrappleManager grappleManager;
+
     private bool isJumpRequested = false;
     private bool isCutlassRequested = false;
     private Vector3 playerPositionPrevious = Vector3.zero;
@@ -52,8 +54,11 @@ public class GameplayController : MonoBehaviour
         {
             isJumpRequested = true;
         }
+        if (Input.GetKeyDown(KeyCode.F)) {
 
-        if (Input.GetButtonDown(inputNameFire1))
+            grappleManager.ToggleGrapple();
+        }
+        if (Input.GetButton(inputNameFire1))
         {
             isCutlassRequested = true;
         }
