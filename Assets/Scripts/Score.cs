@@ -39,7 +39,6 @@ public class Score : MonoBehaviour
             TextMeshPro textmeshPro = GetComponent<TextMeshPro>();
             textmeshPro.SetText(scoreString);
 
-            print("Score: "+totalScore);
         }
     }
 }
