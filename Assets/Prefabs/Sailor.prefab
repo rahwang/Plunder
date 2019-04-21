@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3247420741513345637}
   - component: {fileID: 2753972256409354648}
   m_Layer: 0
-  m_Name: New Sprite
+  m_Name: Sailor Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68,15 +68,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 4605018ad973c6e43a096a2ac27b1a44, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.38, y: 3}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &8211148966400946270
@@ -104,7 +104,7 @@ Transform:
   m_GameObject: {fileID: 8211148966400946270}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.6660842, y: 0.6454265, z: -3.3109121}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.13324, y: 0.13324, z: 0.13324}
   m_Children:
   - {fileID: 3247420741513345637}
   m_Father: {fileID: 0}
