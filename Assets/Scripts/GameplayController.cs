@@ -175,7 +175,8 @@ public class GameplayController : MonoBehaviour
         cutlass.transform.localScale = new Vector2(this.playerIsFacingRight
             ? Mathf.Abs(cutlass.transform.localScale.x)
             : -Mathf.Abs(cutlass.transform.localScale.x),
-            1.0f);
+            cutlass.transform.localScale.y
+        );
 
         if (isCutlassRequested)
         {
