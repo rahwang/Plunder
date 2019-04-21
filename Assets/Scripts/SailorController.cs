@@ -18,8 +18,12 @@ public class SailorController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Cutlass"))
         {
-            gameObject.SetActive(false);
-            Destroy(gameObject);
+            gameObject.transform.rotation = Quaternion.Euler(0,0,90);
+            Vector3 oldPos = gameObject.transform.position;
+            oldPos.y -= 0.5f;
+            gameObject.transform.position = oldPos;
+            // gameObject.SetActive(false);
+            // Destroy(gameObject);
             StateManager.numEnemiesAlive--;
             float velocity = GameplayController.GetVelocity().magnitude;
             Score.Kill(velocity);
