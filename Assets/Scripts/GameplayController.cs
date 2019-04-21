@@ -60,43 +60,38 @@ public class GameplayController : MonoBehaviour
     void FixedUpdate()
     {
         float horizontalFactor = Input.GetAxis(inputNameHorizontal);
-        // animator.SetFloat("Speed", Mathf.Abs(horizontalFactor));
 
-        if (horizontalFactor * body.velocity.x < playerVelocityMax)
+        if (this.grappleManager.isGrappling)
         {
-            body.AddForce(Vector2.right * horizontalFactor * playerForceMovement);
-        }
-
-
-        // Enforce player max velocity
-        Vector2 playerVelocity = new Vector2(
-            Mathf.Min(body.velocity.x, (body.velocity.x >= 0.0f) ? playerVelocityMax : -playerVelocityMax),
-            body.velocity.y
-        );
-
-        body.velocity = playerVelocity;
-
-        Vector3 playerGroundPosition;
-        playerGroundPosition.x = playerPhysicsTransform.position.x;
-        playerGroundPosition.y = playerPhysicsTransform.position.y - playerRadius;
-        playerGroundPosition.z = playerPhysicsTransform.position.z;
-        bool isGrounded = Physics2D.Linecast(
-            playerPhysicsTransform.position,
-            playerGroundPosition,
-            groundLayerMask
-        );
-
-
-        if (isJumpRequested && isGrounded)
-        {
-            isJumpRequested = false;
-            // animator.SetTrigger(inputTriggerNameJump);
-            body.AddForce(new Vector2(0.0f, playerForceJump));
+            this.body.simulated = false;
         }
         else
         {
-            isJumpRequested = false;
+            this.body.simulated = true;
+            if (horizontalFactor * body.velocity.x < playerVelocityMax)
+            {
+                body.AddForce(Vector2.right * horizontalFactor * playerForceMovement);
+            }
+            // Enforce player max velocity
+            Vector2 playerVelocity = new Vector2(
+                Mathf.Min(body.velocity.x, (body.velocity.x >= 0.0f) ? playerVelocityMax : -playerVelocityMax),
+                body.velocity.y
+            );
+            body.velocity = playerVelocity;
 
+            Vector3 playerGroundPosition;
+            playerGroundPosition.x = playerPhysicsTransform.position.x;
+            playerGroundPosition.y = playerPhysicsTransform.position.y - playerRadius;
+            playerGroundPosition.z = playerPhysicsTransform.position.z;
+            bool isGrounded = Physics2D.Linecast(
+                playerPhysicsTransform.position,
+                playerGroundPosition,
+                groundLayerMask
+            );
+
+
+            if (isJumpRequested && isGrounded) { body.AddForce(new Vector2(0.0f, playerForceJump)); }
+            isJumpRequested = false;
         }
 
         this.ComputePlayerFacingDirection(horizontalFactor);
