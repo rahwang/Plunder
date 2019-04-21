@@ -43,10 +43,10 @@ public class GameplayController : MonoBehaviour
         Vector3 playerGroundPosition;
         playerGroundPosition.x = playerTransform.position.x;
         playerGroundPosition.y = playerTransform.position.y - playerRadius;
-        playerGroundPosition.z = 0.0f;
+        playerGroundPosition.z = playerTransform.position.z;
         bool isGrounded = Physics2D.Linecast(
             playerTransform.position,
-            playerTransform.position + playerGroundPosition,
+            playerGroundPosition,
             groundLayerMask
         );
 
@@ -119,7 +119,7 @@ public class GameplayController : MonoBehaviour
         float playerCircumference = 2.0f * Mathf.PI * playerRadius;
         float playerDistanceTraveled = Vector3.Distance(playerPositionPrevious, playerTransform.position);
 
-        Debug.Assert(playerRadius > 0.0f);
+        Debug.Assert(playerCircumference > 0.0f);
         float playerRotationDelta = 2.0f * Mathf.PI * playerDistanceTraveled / playerCircumference;
         playerRotationDelta = (inputHorizontalFactor >= 0.0f)
             ? -playerRotationDelta
