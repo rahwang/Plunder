@@ -6,32 +6,76 @@ public class StateManager : MonoBehaviour
     enum GameState {Play, Death, Win, Title};
     public static int numEnemiesAlive;
 
-    bool m_SceneLoaded;
+    bool isEnemiesLoaded = false;
     public string inputNameSubmit = "Submit";
 
     GameState currentState;
     // Start is called before the first frame update
     void Start()
     {
+        this.EnsureBootstrapSceneIsLoaded();
         numEnemiesAlive = 0;
         this.EnterTitle();
     }
+
+    void EnsureBootstrapSceneIsLoaded()
+    {
+        LoadSceneKeepBootstrapUnloadOthers("Bootstrap", "Bootstrap");
+    }
+
+    private void SetGameObjectsActive(GameObject[] objects, bool active)
+    {
+        for (int i = 0; i < objects.Length; i++)
+        {
+            objects[i].gameObject.SetActive(active);
+        }
+    }
+
+     public void LoadSceneKeepBootstrapUnloadOthers(string sceneToLoadName, string sceneToKeepName)
+     {
+        bool isSceneFound = false;
+
+        for (int sceneIndex = 0; sceneIndex < SceneManager.sceneCount; sceneIndex++)
+        {
+            var scene = SceneManager.GetSceneAt(sceneIndex);
+            if (!scene.IsValid()) { continue; }
+            if (scene.name.Equals(sceneToKeepName))
+            {
+                SetGameObjectsActive(scene.GetRootGameObjects(), true);
+                if (sceneToLoadName.Equals(sceneToKeepName))
+                {
+                    return;
+                }
+                continue;
+            }
+
+            this.SetGameObjectsActive(scene.GetRootGameObjects(), false);
+
+            if (scene.name.Equals(sceneToLoadName))
+            {
+                SetGameObjectsActive(scene.GetRootGameObjects(), true);
+                isSceneFound = true;
+            }
+        }
+
+        if (!isSceneFound)
+        {
+            SceneManager.LoadScene(sceneToLoadName, LoadSceneMode.Additive);
+        }
+    }
+
 
     void EnterTitle()
     {
         Debug.Log("Entering title");
         currentState = GameState.Title;
-        if (SceneManager.GetActiveScene().name != "Title Screen")
-        {
-            SceneManager.LoadScene("Title Screen", LoadSceneMode.Additive);
-        }
+        this.LoadSceneKeepBootstrapUnloadOthers("Title Screen", "Bootstrap");
     }
 
     void Title()
     {
         if (Input.GetButtonDown(inputNameSubmit))
         {
-            SceneManager.UnloadSceneAsync("Title Screen");
             this.EnterPlay();
         }
     }
@@ -40,8 +84,9 @@ public class StateManager : MonoBehaviour
     {
         currentState = GameState.Play;
         print("Starting Game");
-        // set scene to shiplevel
-        SceneManager.LoadScene("ShipLevel", LoadSceneMode.Additive);
+
+        this.LoadSceneKeepBootstrapUnloadOthers("ShipLevel", "Bootstrap");
+        isEnemiesLoaded = false;
         // play music looping?
     }
 
@@ -49,8 +94,13 @@ public class StateManager : MonoBehaviour
     {
         // TODO: Test Death here.
 
+        if (!isEnemiesLoaded && numEnemiesAlive > 0)
+        {
+            isEnemiesLoaded = true;
+        }
 
-        if (numEnemiesAlive <= 0)
+
+        if (isEnemiesLoaded && numEnemiesAlive <= 0)
         {
             this.EnterWin();
         }
@@ -61,8 +111,7 @@ public class StateManager : MonoBehaviour
     {
         currentState = GameState.Win;
         print("you win!!");
-        SceneManager.UnloadSceneAsync("ShipLevel");
-        SceneManager.LoadScene("Win");
+        this.LoadSceneKeepBootstrapUnloadOthers("Win", "Bootstrap");
     }
 
     void Win()
@@ -70,7 +119,6 @@ public class StateManager : MonoBehaviour
         // play victory theme
         if (Input.GetButtonDown(inputNameSubmit))
         {
-            SceneManager.UnloadSceneAsync("Win");
             this.EnterTitle();
         }
     }
@@ -78,15 +126,15 @@ public class StateManager : MonoBehaviour
     void EnterDeath()
     {
         currentState = GameState.Death;
-        SceneManager.UnloadSceneAsync("ShipLevel");
-        SceneManager.LoadScene("Death");
+
+        // OpenScene unloads current scene and loads requested scene.
+        this.LoadSceneKeepBootstrapUnloadOthers("Death", "Bootstrap");
     }
 
     void Death()
     {
         if (Input.GetButtonDown(inputNameSubmit))
         {
-            SceneManager.UnloadSceneAsync("Death");
             this.EnterTitle();
         }
     }

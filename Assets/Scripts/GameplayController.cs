@@ -33,9 +33,6 @@ public class GameplayController : MonoBehaviour
     private bool isPlayerPositionPreviousInitialized = false;
     public float cutlassOffset = 1.0f;
 
-    public int cutlassDurationTicks = 30;
-    private int cutlassTicksSinceRequest = 0;
-
     private bool playerIsFacingRight = true;
 
     void Awake()
@@ -182,21 +179,13 @@ public class GameplayController : MonoBehaviour
             cutlass.transform.localScale.y
         );
 
+
+        cutlass.SetActive(isCutlassRequested);
         if (isCutlassRequested)
         {
-            isCutlassRequested = false;
-            cutlassTicksSinceRequest = 0;
-            cutlass.SetActive(true);
             audioController.playCutlass();
         }
-
-
-        if (cutlassTicksSinceRequest == cutlassDurationTicks)
-        {
-            cutlass.SetActive(false);
-        }
-
-        cutlassTicksSinceRequest = Mathf.Min(cutlassTicksSinceRequest + 1, cutlassDurationTicks);
+        isCutlassRequested = false;
     }
 
     public static Vector2 GetVelocity()
