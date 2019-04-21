@@ -6,7 +6,7 @@ public class StateManager : MonoBehaviour
     enum GameState {Play, Death, Win, Title};
     public static int numEnemiesAlive;
 
-    bool m_SceneLoaded;
+    bool isEnemiesLoaded = false;
     public string inputNameSubmit = "Submit";
 
     GameState currentState;
@@ -42,6 +42,7 @@ public class StateManager : MonoBehaviour
         print("Starting Game");
         // set scene to shiplevel
         SceneManager.LoadScene("ShipLevel", LoadSceneMode.Additive);
+        isEnemiesLoaded = false;
         // play music looping?
     }
 
@@ -49,8 +50,13 @@ public class StateManager : MonoBehaviour
     {
         // TODO: Test Death here.
 
+        if (!isEnemiesLoaded && numEnemiesAlive > 0)
+        {
+            isEnemiesLoaded = true;
+        }
 
-        if (numEnemiesAlive <= 0)
+
+        if (isEnemiesLoaded && numEnemiesAlive <= 0)
         {
             this.EnterWin();
         }
