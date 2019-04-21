@@ -3,15 +3,19 @@ using TMPro;
 
 public class Score : MonoBehaviour
 {
+    private static Score instance = null;
     int totalScore;
+    private bool newScore = false;
     // Start is called before the first frame update
     void Start()
-    {
+    {   
+        Debug.Assert(Score.instance==null);
+        Score.instance = this;
         totalScore = 0;
     }
 
-    void Kill(int velocity){
-        totalScore+=Mathf.RoundToInt(velocity*1000);
+    public static void Kill(float velocity){
+        Score.instance.totalScore+=Mathf.RoundToInt(velocity*100);
     }
     int GetScore(){
         return totalScore;
@@ -22,13 +26,20 @@ public class Score : MonoBehaviour
         if(1==Random.Range(0,30))
         {
             totalScore-=1;
-        }
-        string scoreString = "" + totalScore + " Doubloon";
-        if(totalScore != 1){
-            scoreString += "s";
+            newScore = true;
         }
 
-        TextMeshPro textmeshPro = GetComponent<TextMeshPro>();
-        textmeshPro.SetText(scoreString);
+        if (newScore)
+        {
+            string scoreString = "" + totalScore + " Doubloon";
+            if(totalScore != 1){
+                scoreString += "s";
+            }
+
+            TextMeshPro textmeshPro = GetComponent<TextMeshPro>();
+            textmeshPro.SetText(scoreString);
+
+            print("Score: "+totalScore);
+        }
     }
 }

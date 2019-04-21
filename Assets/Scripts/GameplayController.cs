@@ -1,9 +1,10 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class GameplayController : MonoBehaviour
 {
-
+    private static GameplayController instance = null;
     public Transform playerPhysicsTransform = null;
     public Transform playerRenderingTransform = null;
     // public Animator animator = null;
@@ -14,6 +15,7 @@ public class GameplayController : MonoBehaviour
     public string inputNameJump = "Jump";
     public string inputTriggerNameJump = "Jump";
     public string inputNameHorizontal = "Horizontal";
+
     public string inputNameFire1 = "Fire1";
 
     public float playerForceMovement = 365.0f;
@@ -27,6 +29,7 @@ public class GameplayController : MonoBehaviour
     private bool isCutlassRequested = false;
     private Vector3 playerPositionPrevious = Vector3.zero;
     private bool isPlayerPositionPreviousInitialized = false;
+    public float cutlassOffset = 1.0f;
 
     public int cutlassDurationTicks = 30;
     private int cutlassTicksSinceRequest = 0;
@@ -35,6 +38,8 @@ public class GameplayController : MonoBehaviour
 
     void Awake()
     {
+        Debug.Assert(GameplayController.instance==null);
+        GameplayController.instance = this;
 
         // Debug.Assert(animator != null);
         Debug.Assert(body != null);
@@ -155,7 +160,8 @@ public class GameplayController : MonoBehaviour
 
     void ComputeCutlass()
     {
-        Vector3 offset = new Vector3(this.playerIsFacingRight ? 2.5f : -2.5f, 0.0f, 0.0f);
+        float cutlassOffset = this.playerRadius + 1e-2f;
+        Vector3 offset = new Vector3(this.playerIsFacingRight ? cutlassOffset : -cutlassOffset, 0.0f, 0.0f);
         cutlass.transform.position = playerPhysicsTransform.position + offset;
         cutlass.transform.localScale = new Vector2(this.playerIsFacingRight
             ? Mathf.Abs(cutlass.transform.localScale.x)
@@ -176,5 +182,10 @@ public class GameplayController : MonoBehaviour
         }
 
         cutlassTicksSinceRequest = Mathf.Min(cutlassTicksSinceRequest + 1, cutlassDurationTicks);
+    }
+
+    public static Vector2 GetVelocity()
+    {
+        return GameplayController.instance.body.velocity;
     }
 }
