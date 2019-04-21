@@ -13,7 +13,6 @@ public class StateManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("START");
         numEnemiesAlive = 0;
         this.EnterTitle();
     }
@@ -63,7 +62,7 @@ public class StateManager : MonoBehaviour
         currentState = GameState.Win;
         print("you win!!");
         SceneManager.UnloadSceneAsync("ShipLevel");
-        SceneManager.LoadScene("Win Screen");
+        SceneManager.LoadScene("Win");
     }
 
     void Win()
@@ -71,7 +70,7 @@ public class StateManager : MonoBehaviour
         // play victory theme
         if (Input.GetButtonDown(inputNameSubmit))
         {
-            SceneManager.UnloadSceneAsync("Win Screen");
+            SceneManager.UnloadSceneAsync("Win");
             this.EnterTitle();
         }
     }
@@ -80,14 +79,14 @@ public class StateManager : MonoBehaviour
     {
         currentState = GameState.Death;
         SceneManager.UnloadSceneAsync("ShipLevel");
-        SceneManager.LoadScene("Death Screen");
+        SceneManager.LoadScene("Death");
     }
 
     void Death()
     {
         if (Input.GetButtonDown(inputNameSubmit))
         {
-            SceneManager.UnloadSceneAsync("Death Screen");
+            SceneManager.UnloadSceneAsync("Death");
             this.EnterTitle();
         }
     }
