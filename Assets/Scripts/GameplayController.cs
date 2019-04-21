@@ -4,7 +4,8 @@ using System.Collections;
 public class GameplayController : MonoBehaviour
 {
 
-    public Transform playerTransform = null;
+    public Transform playerPhysicsTransform = null;
+    public Transform playerRenderingTransform = null;
     // public Animator animator = null;
     public Rigidbody2D body = null;
     public LayerMask groundLayerMask = 0;
@@ -30,27 +31,21 @@ public class GameplayController : MonoBehaviour
     public int cutlassDurationTicks = 30;
     private int cutlassTicksSinceRequest = 0;
 
+    private bool playerIsFacingRight = true;
+
     void Awake()
     {
 
         // Debug.Assert(animator != null);
         Debug.Assert(body != null);
         Debug.Assert(cutlass != null);
+        Debug.Assert(playerPhysicsTransform != null);
+        Debug.Assert(playerRenderingTransform != null);
     }
 
     void Update()
     {
-        Vector3 playerGroundPosition;
-        playerGroundPosition.x = playerTransform.position.x;
-        playerGroundPosition.y = playerTransform.position.y - playerRadius;
-        playerGroundPosition.z = playerTransform.position.z;
-        bool isGrounded = Physics2D.Linecast(
-            playerTransform.position,
-            playerGroundPosition,
-            groundLayerMask
-        );
-
-        if (Input.GetButtonDown(inputNameJump) && isGrounded)
+        if (Input.GetButtonDown(inputNameJump))
         {
             isJumpRequested = true;
         }
@@ -67,9 +62,12 @@ public class GameplayController : MonoBehaviour
     void FixedUpdate()
     {
         float horizontalFactor = Input.GetAxis(inputNameHorizontal);
-        // animator.SetFloat("Speed", Mathf.Abs(horizontalFactor));
-        
-        if (this.grappleManager.isGrappling) {
+
+        // Update player facing direction only on input.
+        if (Mathf.Abs(horizontalFactor) > 1e-5f) { this.playerIsFacingRight = (horizontalFactor >= 0.0f); }
+
+        if (this.grappleManager.isGrappling)
+        {
             this.body.simulated = false;
             Vector2 playerPos = new Vector2(playerTransform.position.x, playerTransform.position.y);
             Vector2 currentVelocity = this.body.velocity;
@@ -81,7 +79,9 @@ public class GameplayController : MonoBehaviour
             //this.body.velocity = newVelocity;
             Debug.LogWarning(" prev " + playerTransform.position + " new " + newPosition);
             this.playerTransform.position = new Vector3(newPosition.x, newPosition.y, this.playerTransform.position.z);
-        } else {
+        }
+        else
+        {
             this.body.simulated = true;
             if (horizontalFactor * body.velocity.x < playerVelocityMax)
             {
@@ -93,63 +93,63 @@ public class GameplayController : MonoBehaviour
                 body.velocity.y
             );
             body.velocity = playerVelocity;
-            if (isJumpRequested)
-            {
-                isJumpRequested = false;
-                // animator.SetTrigger(inputTriggerNameJump);
-                body.AddForce(new Vector2(0.0f, playerForceJump));
-            }
+
+            Vector3 playerGroundPosition;
+            playerGroundPosition.x = playerPhysicsTransform.position.x;
+            playerGroundPosition.y = playerPhysicsTransform.position.y - playerRadius;
+            playerGroundPosition.z = playerPhysicsTransform.position.z;
+            bool isGrounded = Physics2D.Linecast(
+                playerPhysicsTransform.position,
+                playerGroundPosition,
+                groundLayerMask
+            );
+
+
+            if (isJumpRequested && isGrounded) { body.AddForce(new Vector2(0.0f, playerForceJump)); }
+            isJumpRequested = false;
         }
-        
-        this.ComputePlayerFacingDirection(horizontalFactor);
-        this.ComputePlayerRotation(horizontalFactor);
 
-        float cutlassDirection = (Mathf.Abs(horizontalFactor) > 1e-5f)
-            ? horizontalFactor
-            : body.velocity.x;
-        this.ComputeCutlass(cutlassDirection);
+        this.ComputePlayerFacingDirection();
+        this.ComputePlayerRotation();
+        this.ComputeCutlass();
     }
 
-    void ComputePlayerFacingDirection(float inputHorizontalFactor)
+    void ComputePlayerFacingDirection()
     {
-        Vector2 localScale = new Vector2((inputHorizontalFactor >= 0.0f)
-            ? Mathf.Abs(playerTransform.localScale.x)
-            : -Mathf.Abs(playerTransform.localScale.x),
-            playerTransform.localScale.y
+        Vector2 localScale = new Vector2(this.playerIsFacingRight
+            ? Mathf.Abs(playerRenderingTransform.localScale.x)
+            : -Mathf.Abs(playerRenderingTransform.localScale.x),
+            playerRenderingTransform.localScale.y
         );
-        playerTransform.localScale = localScale;
+        playerRenderingTransform.localScale = localScale;
     }
 
-    void ComputePlayerRotation(float inputHorizontalFactor)
+    void ComputePlayerRotation()
     {
         playerPositionPrevious = isPlayerPositionPreviousInitialized
-            ? playerTransform.position
-            : playerPositionPrevious;
+            ? playerPositionPrevious
+            : playerRenderingTransform.position;
         isPlayerPositionPreviousInitialized = true;
 
         float playerCircumference = 2.0f * Mathf.PI * playerRadius;
-        float playerDistanceTraveled = Vector3.Distance(playerPositionPrevious, playerTransform.position);
+        float playerDistanceTraveled = Vector3.Distance(playerPositionPrevious, playerRenderingTransform.position);
+        playerPositionPrevious = playerRenderingTransform.position;
 
         Debug.Assert(playerCircumference > 0.0f);
         float playerRotationDelta = 2.0f * Mathf.PI * playerDistanceTraveled / playerCircumference;
-        playerRotationDelta = (inputHorizontalFactor >= 0.0f)
+        playerRotationDelta = this.playerIsFacingRight
             ? -playerRotationDelta
             : playerRotationDelta;
-        playerPositionPrevious = playerTransform.position;
 
-        float tiltAroundX = Input.GetAxis("Horizontal") * playerRotationDelta;
-        float tiltAroundZ = Input.GetAxis("Vertical") * playerRotationDelta;
-
-        Quaternion target = Quaternion.Euler(0.0f, 0.0f, tiltAroundZ);
-
-        playerTransform.rotation = (playerTransform.rotation * target).normalized;
+        Quaternion target = Quaternion.Euler(0.0f, 0.0f, Mathf.Rad2Deg * playerRotationDelta);
+        playerRenderingTransform.rotation = (playerRenderingTransform.rotation * target).normalized;
     }
 
-    void ComputeCutlass(float horizontalFactor)
+    void ComputeCutlass()
     {
-        Vector3 offset = new Vector3((horizontalFactor >= 0.0f) ? 2.5f : -2.5f, 0.0f, 0.0f);
-        cutlass.transform.position = playerTransform.position + offset;
-        cutlass.transform.localScale = new Vector2((horizontalFactor >= 0.0f)
+        Vector3 offset = new Vector3(this.playerIsFacingRight ? 2.5f : -2.5f, 0.0f, 0.0f);
+        cutlass.transform.position = playerPhysicsTransform.position + offset;
+        cutlass.transform.localScale = new Vector2(this.playerIsFacingRight
             ? Mathf.Abs(cutlass.transform.localScale.x)
             : -Mathf.Abs(cutlass.transform.localScale.x),
             1.0f);

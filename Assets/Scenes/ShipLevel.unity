@@ -2772,6 +2772,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d728efade3a531f448c7ab8f166c04c1, type: 3}
+--- !u!4 &463620666 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1039165952434614353, guid: d728efade3a531f448c7ab8f166c04c1,
+    type: 3}
+  m_PrefabInstance: {fileID: 463620665}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &485185887
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6011,6 +6017,16 @@ PrefabInstance:
       propertyPath: grappleManager
       value: 
       objectReference: {fileID: 102066707}
+    - target: {fileID: 6656972208124051593, guid: bd1bf912a9c987840ac8b486ce964c7e,
+        type: 3}
+      propertyPath: playerPhysicsTransform
+      value: 
+      objectReference: {fileID: 433096502}
+    - target: {fileID: 6656972208124051593, guid: bd1bf912a9c987840ac8b486ce964c7e,
+        type: 3}
+      propertyPath: playerRenderingTransform
+      value: 
+      objectReference: {fileID: 463620666}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd1bf912a9c987840ac8b486ce964c7e, type: 3}
 --- !u!1 &1019407786
