@@ -108,6 +108,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3207c88b33cec4459c3538608ea7f6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bloodPrefab: {fileID: 2204816540555646427, guid: f32eeeb651724b04b9056baeeba0f828,
+    type: 3}
 --- !u!50 &5376653692101027517
 Rigidbody2D:
   serializedVersion: 4

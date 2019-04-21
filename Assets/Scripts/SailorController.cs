@@ -3,7 +3,7 @@ using System.Collections;
 
 public class SailorController : MonoBehaviour
 {
-
+    public GameObject bloodPrefab;
     // Use this for initialization
     void Start() {
 
@@ -27,6 +27,13 @@ public class SailorController : MonoBehaviour
             StateManager.numEnemiesAlive--;
             float velocity = GameplayController.GetVelocity().magnitude;
             Score.Kill(velocity);
+
+            float x = this.transform.position.x;
+            float y = this.transform.position.y+0.3f;
+            float z = this.transform.position.z;
+
+            GameObject blood = Instantiate(bloodPrefab, new Vector3(x, y, z)  ,Quaternion.identity);
+            blood.transform.parent = this.transform;
         }
     }
 }
