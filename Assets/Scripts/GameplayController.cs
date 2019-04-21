@@ -21,6 +21,7 @@ public class GameplayController : MonoBehaviour
     public float playerForceMovement = 365.0f;
     public float playerForceJump = 1000.0f;
     public float playerVelocityMax = 5.0f;
+    public float playerGrappleVelocityMin = 1.0f;
     public float playerRadius = 1.0f;
 
     public GrappleManager grappleManager;
@@ -88,7 +89,11 @@ public class GameplayController : MonoBehaviour
             {
                 newDirection *= -1;
             }
-            var newVelocity =  newDirection * this.body.velocity.magnitude;
+            var newSpeed = this.body.velocity.magnitude;
+            if (newSpeed < playerGrappleVelocityMin) {
+                newSpeed = playerGrappleVelocityMin;
+            }
+            var newVelocity =  newDirection * newSpeedenforn;
             this.body.velocity = newVelocity;
         }
         else

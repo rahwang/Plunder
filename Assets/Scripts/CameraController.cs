@@ -28,4 +28,21 @@ public class CameraController : MonoBehaviour
 
         this.transform.position = cameraPositionNext;
     }
+
+    void playWin()
+    {
+        // stop playing background music
+        // play win
+    }
+    void playDeath()
+    {
+        // stop playing background music
+        // play death 1 or 2
+    }
+
+    void playMusic()
+    {
+        // stop playing music
+        // play music
+    }
 }
