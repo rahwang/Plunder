@@ -127,7 +127,9 @@ public class GameplayController : MonoBehaviour
 
         Debug.Assert(playerCircumference > 0.0f);
         float playerRotationDelta = 2.0f * Mathf.PI * playerDistanceTraveled / playerCircumference;
-        playerRotationDelta = this.playerIsFacingRight
+
+        bool isPlayerVelocityFacingRight = (this.body.velocity.x >= 0.0f);
+        playerRotationDelta = isPlayerVelocityFacingRight
             ? -playerRotationDelta
             : playerRotationDelta;
 
