@@ -93,7 +93,7 @@ public class GameplayController : MonoBehaviour
             if (newSpeed < playerGrappleVelocityMin) {
                 newSpeed = playerGrappleVelocityMin;
             }
-            var newVelocity =  newDirection * newSpeedenforn;
+            var newVelocity =  newDirection * newSpeed;
             this.body.velocity = newVelocity;
         }
         else
