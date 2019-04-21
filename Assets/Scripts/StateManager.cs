@@ -89,10 +89,13 @@ public class StateManager : MonoBehaviour
         isEnemiesLoaded = false;
         // play music looping?
     }
-
+    
     void Play()
     {
-        // TODO: Test Death here.
+        if (GameplayController.isDead) {
+
+            EnterDeath();
+        }
 
         if (Input.GetButton("Escape"))
         {
