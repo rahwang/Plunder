@@ -30,6 +30,7 @@ public class GameplayController : MonoBehaviour
 
     private bool isJumpRequested = false;
     private bool isCutlassRequested = false;
+    private bool isCutlassAudioPlaying = false;
     private Vector3 playerPositionPrevious = Vector3.zero;
     private bool isPlayerPositionPreviousInitialized = false;
     public float cutlassOffset = 1.0f;
@@ -54,7 +55,7 @@ public class GameplayController : MonoBehaviour
         {
             isJumpRequested = true;
         }
-        if (Input.GetKeyDown(KeyCode.F) || Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1))
         {
             grappleManager.ToggleGrapple();
         }
@@ -64,6 +65,10 @@ public class GameplayController : MonoBehaviour
         if (Input.GetButton(inputNameFire1))
         {
             isCutlassRequested = true;
+        }
+        else
+        {
+            isCutlassAudioPlaying = false;
         }
     }
 
@@ -186,8 +191,9 @@ public class GameplayController : MonoBehaviour
 
 
         cutlass.SetActive(isCutlassRequested);
-        if (isCutlassRequested)
+        if (isCutlassRequested && !isCutlassAudioPlaying)
         {
+            isCutlassAudioPlaying = true;
             audioController.playCutlass();
         }
         isCutlassRequested = false;

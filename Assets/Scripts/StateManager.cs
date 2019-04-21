@@ -97,6 +97,11 @@ public class StateManager : MonoBehaviour
             EnterDeath();
         }
 
+        if (Input.GetButton("Escape"))
+        {
+            this.EnterTitle();
+        }
+
         if (!isEnemiesLoaded && numEnemiesAlive > 0)
         {
             isEnemiesLoaded = true;
