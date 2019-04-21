@@ -27,6 +27,7 @@ public class GameplayController : MonoBehaviour
     private bool isCutlassRequested = false;
     private Vector3 playerPositionPrevious = Vector3.zero;
     private bool isPlayerPositionPreviousInitialized = false;
+    public float cutlassOffset = 1.0f;
 
     public int cutlassDurationTicks = 30;
     private int cutlassTicksSinceRequest = 0;
@@ -76,7 +77,7 @@ public class GameplayController : MonoBehaviour
             Vector2 ropeDirection = (newPosition - grapplePointPosition).normalized;
             newPosition = grapplePointPosition + ropeDirection * grappleManager.ropeLength;
             this.playerPhysicsTransform.position = new Vector3(newPosition.x, newPosition.y, this.playerPhysicsTransform.position.z);
-            
+
             var newDirection = new Vector2(-ropeDirection.y, ropeDirection.x);
             if (Vector2.Dot(newDirection, this.body.velocity) < 0)
             {
@@ -154,7 +155,8 @@ public class GameplayController : MonoBehaviour
 
     void ComputeCutlass()
     {
-        Vector3 offset = new Vector3(this.playerIsFacingRight ? 2.5f : -2.5f, 0.0f, 0.0f);
+        float cutlassOffset = this.playerRadius + 1e-2f;
+        Vector3 offset = new Vector3(this.playerIsFacingRight ? cutlassOffset : -cutlassOffset, 0.0f, 0.0f);
         cutlass.transform.position = playerPhysicsTransform.position + offset;
         cutlass.transform.localScale = new Vector2(this.playerIsFacingRight
             ? Mathf.Abs(cutlass.transform.localScale.x)
