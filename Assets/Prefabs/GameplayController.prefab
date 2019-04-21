@@ -56,7 +56,7 @@ MonoBehaviour:
   inputNameFire1: Fire1
   playerForceMovement: 365
   playerForceJump: 1000
-  playerVelocityMax: 5
+  playerVelocityMax: 2
   playerRadius: 0.5
   grappleManager: {fileID: 0}
   cutlassOffset: 1
