@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using TMPro;
 
 public class Score : MonoBehaviour
 {
@@ -20,6 +19,16 @@ public class Score : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        totalScore-=1;
+        if(1==Random.Range(0,30))
+        {
+            totalScore-=1;
+        }
+        string scoreString = "" + totalScore + " Doubloon";
+        if(totalScore != 1){
+            scoreString += "s";
+        }
+
+        TextMeshPro textmeshPro = GetComponent<TextMeshPro>();
+        textmeshPro.SetText(scoreString);
     }
 }
