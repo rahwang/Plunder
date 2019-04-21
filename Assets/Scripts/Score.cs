@@ -14,8 +14,8 @@ public class Score : MonoBehaviour
         totalScore = 0;
     }
 
-    public static void Kill(int velocity){
-        Score.instance.totalScore+=Mathf.RoundToInt(velocity*1000);
+    public static void Kill(float velocity){
+        Score.instance.totalScore+=Mathf.RoundToInt(velocity*100);
     }
     int GetScore(){
         return totalScore;

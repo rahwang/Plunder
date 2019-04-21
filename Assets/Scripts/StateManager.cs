@@ -5,6 +5,8 @@ public class StateManager : MonoBehaviour
 {
     enum GameState {Play, Death, Win, Title};
     public static int numEnemiesAlive;
+
+    bool activeGame = false;
     bool m_SceneLoaded;
     public string inputNameSubmit = "Submit";
 
@@ -32,6 +34,7 @@ public class StateManager : MonoBehaviour
     }
 
     void Win(){
+        print("you win!!");
         currentState = GameState.Win;
         // play victory theme
     }
@@ -48,6 +51,13 @@ public class StateManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(numEnemiesAlive>0 && !activeGame){
+            activeGame = true;
+        }
+        if(numEnemiesAlive == 0 && activeGame){
+            Win();
+        }
+
         switch (currentState){
             case GameState.Title:
             {
