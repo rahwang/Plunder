@@ -11,11 +11,20 @@ public class StateManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SceneManager.LoadScene("ShipLevel", LoadSceneMode.Additive);
+        switch(SceneManager.GetActiveScene().name){
+            case "Title Screen":
+                print("Active scene is " + SceneManager.GetActiveScene().name);
+                currentState = GameState.Title;
+                break;
+            default:
+                break;
+        }
     }
 
     void Play(){
+        print("Starting Game");
         // set scene to shiplevel
+        SceneManager.LoadScene("ShipLevel", LoadSceneMode.Additive);
         // play music looping?
         currentState = GameState.Play;
     }
