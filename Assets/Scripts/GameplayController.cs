@@ -93,18 +93,6 @@ public class GameplayController : MonoBehaviour
         }
         else
         {
-            this.body.simulated = true;
-            if (horizontalFactor * body.velocity.x < playerVelocityMax)
-            {
-                body.AddForce(Vector2.right * horizontalFactor * playerForceMovement);
-            }
-            // Enforce player max velocity
-            Vector2 playerVelocity = new Vector2(
-                Mathf.Min(body.velocity.x, (body.velocity.x >= 0.0f) ? playerVelocityMax : -playerVelocityMax),
-                body.velocity.y
-            );
-            body.velocity = playerVelocity;
-
             Vector3 playerGroundPosition;
             playerGroundPosition.x = playerPhysicsTransform.position.x;
             playerGroundPosition.y = playerPhysicsTransform.position.y - playerRadius;
@@ -114,6 +102,22 @@ public class GameplayController : MonoBehaviour
                 playerGroundPosition,
                 groundLayerMask
             );
+
+            this.body.simulated = true;
+            if (Mathf.Abs(horizontalFactor) > 1e-5f && isGrounded)
+            {
+                body.AddForce(Vector2.right * horizontalFactor * playerForceMovement);
+            }
+
+            // Enforce player max velocity only when grounded.
+            Vector2 playerVelocity = isGrounded
+                ? new Vector2(
+                    Mathf.Min(body.velocity.x, (body.velocity.x >= 0.0f) ? playerVelocityMax : -playerVelocityMax),
+                    body.velocity.y
+                )
+                : body.velocity;
+
+            body.velocity = playerVelocity;
 
 
             if (isJumpRequested && isGrounded) { body.AddForce(new Vector2(0.0f, playerForceJump)); }
