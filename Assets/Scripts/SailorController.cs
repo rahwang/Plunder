@@ -21,8 +21,8 @@ public class SailorController : MonoBehaviour
             gameObject.SetActive(false);
             Destroy(gameObject);
             StateManager.numEnemiesAlive--;
-            
-            Score.Kill(2);
+            float velocity = GameplayController.GetVelocity().magnitude;
+            Score.Kill(velocity);
         }
     }
 }

@@ -10,6 +10,10 @@ public class Spawner : MonoBehaviour
     }
 
     void SpawnSailor(){
+        if (StateManager.numEnemiesAlive > 2)
+        {
+            return;
+        }
         float x = this.transform.position.x;
         float y = this.transform.position.y;
         float z = this.transform.position.z;
