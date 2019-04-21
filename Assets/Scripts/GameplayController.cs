@@ -93,7 +93,7 @@ public class GameplayController : MonoBehaviour
             if (newSpeed < playerGrappleVelocityMin) {
                 newSpeed = playerGrappleVelocityMin;
             }
-            var newVelocity =  newDirection * newSpeedenforn;
+            var newVelocity =  newDirection * newSpeed;
             this.body.velocity = newVelocity;
         }
         else
@@ -117,7 +117,7 @@ public class GameplayController : MonoBehaviour
             // Enforce player max velocity only when grounded.
             Vector2 playerVelocity = isGrounded
                 ? new Vector2(
-                    Mathf.Min(body.velocity.x, (body.velocity.x >= 0.0f) ? playerVelocityMax : -playerVelocityMax),
+                    Mathf.Max(Mathf.Min(body.velocity.x, playerVelocityMax), -playerVelocityMax),
                     body.velocity.y
                 )
                 : body.velocity;
