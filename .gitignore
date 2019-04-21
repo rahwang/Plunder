@@ -1,4 +1,4 @@
-# This .gitignore file should be placed at the root of your Unity project directory
+l# This .gitignore file should be placed at the root of your Unity project directory
 
 /[Ll]ibrary/
 /[Tt]emp/
@@ -54,3 +54,6 @@ sysinfo.txt
 
 # Crashlytics generated file
 crashlytics-build.properties
+
+# Built Game
+/Build
