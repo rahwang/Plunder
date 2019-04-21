@@ -40,9 +40,4 @@ public class CameraController : MonoBehaviour
         // play death 1 or 2
     }
 
-    void playMusic()
-    {
-        // stop playing music
-        // play music
-    }
 }
