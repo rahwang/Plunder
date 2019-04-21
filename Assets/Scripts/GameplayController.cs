@@ -58,7 +58,7 @@ public class GameplayController : MonoBehaviour
 
             grappleManager.ToggleGrapple();
         }
-        if (Input.GetButtonDown(inputNameFire1))
+        if (Input.GetButton(inputNameFire1))
         {
             isCutlassRequested = true;
         }
