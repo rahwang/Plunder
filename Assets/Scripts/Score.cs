@@ -8,7 +8,7 @@ public class Score : MonoBehaviour
     private bool newScore = false;
     // Start is called before the first frame update
     void Start()
-    {   
+    {
         Debug.Assert(Score.instance==null);
         Score.instance = this;
         totalScore = 0;
@@ -38,7 +38,6 @@ public class Score : MonoBehaviour
 
             TextMeshPro textmeshPro = GetComponent<TextMeshPro>();
             textmeshPro.SetText(scoreString);
-
         }
     }
 }
