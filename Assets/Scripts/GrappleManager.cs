@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class GrappleManager : MonoBehaviour
 {
-    bool isGrappling = false;
+    public Color colorActive;
+    public Color colorDefault;
+    public bool isGrappling = false;
     List<GrapplePoint> validGrapplingPoints = new List<GrapplePoint>();
-    GrapplingPoint activeGrapplePoint;
+    GrapplePoint activeGrapplePoint;
 
     // Start is called before the first frame update
     void Start()
@@ -15,7 +17,20 @@ public class GrappleManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update() {}
+    void Update() 
+    {
+        if (!this.isGrappling) {
+            if (this.activeGrapplePoint != null) {
+                this.activeGrapplePoint.GetComponent<SpriteRenderer>().color = colorDefault;
+            }
+
+            var newActiveGrapplePoint = GetActiveGrapplePoint();
+            if (newActiveGrapplePoint != null) {
+                this.activeGrapplePoint = newActiveGrapplePoint;
+                this.activeGrapplePoint.GetComponent<SpriteRenderer>().color = colorActive;
+            }
+        }
+    }
 
     public void ToggleGrapple() {
         if (this.isGrappling) {
@@ -30,6 +45,7 @@ public class GrappleManager : MonoBehaviour
         if (activeGrapplePoint != null) {
             this.isGrappling = true;
             this.activeGrapplePoint = activeGrapplePoint;
+            this.activeGrapplePoint.GetComponent<SpriteRenderer>().color = colorActive;
         }
     }
 
@@ -47,15 +63,15 @@ public class GrappleManager : MonoBehaviour
 
         var playerPosition = gameObject.transform.position;
         var closestDistance = float.MaxValue;
-        var closetGrapplePoint = null;
+        GrapplePoint closestGrapplePoint = null;
         foreach(GrapplePoint grapplePoint in validGrapplingPoints) {
-            var distance = (playerPosition - grapplePoint).magnitude;
+            var distance = (playerPosition - grapplePoint.gameObject.transform.position).magnitude;
             if (distance < closestDistance) {
                 closestDistance = distance;
-                closestGrapplingPoint = grapplePoint;
+                closestGrapplePoint = grapplePoint;
             }
         }
-        return closetGrapplePoint;
+        return closestGrapplePoint;
     }
 
     void OnTriggerEnter2D(Collider2D col)

@@ -8,10 +8,12 @@ public class GameplayController : MonoBehaviour
     // public Animator animator = null;
     public Rigidbody2D body = null;
     public LayerMask groundLayerMask = 0;
+    public GameObject cutlass = null;
 
     public string inputNameJump = "Jump";
     public string inputTriggerNameJump = "Jump";
     public string inputNameHorizontal = "Horizontal";
+    public string inputNameFire1 = "Fire1";
 
     public float playerForceMovement = 365.0f;
     public float playerForceJump = 1000.0f;
@@ -21,14 +23,19 @@ public class GameplayController : MonoBehaviour
     public GrappleManager grappleManager;
 
     private bool isJumpRequested = false;
+    private bool isCutlassRequested = false;
     private Vector3 playerPositionPrevious = Vector3.zero;
     private bool isPlayerPositionPreviousInitialized = false;
+
+    public int cutlassDurationTicks = 30;
+    private int cutlassTicksSinceRequest = 0;
 
     void Awake()
     {
 
         // Debug.Assert(animator != null);
         Debug.Assert(body != null);
+        Debug.Assert(cutlass != null);
     }
 
     void Update()
@@ -51,6 +58,10 @@ public class GameplayController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F)) {
 
             grappleManager.ToggleGrapple();
+        }
+        if (Input.GetButtonDown(inputNameFire1))
+        {
+            isCutlassRequested = true;
         }
     }
 
@@ -80,10 +91,16 @@ public class GameplayController : MonoBehaviour
             body.AddForce(new Vector2(0.0f, playerForceJump));
         }
 
-        this.SetPlayerRotation(horizontalFactor);
+        this.ComputePlayerFacingDirection(horizontalFactor);
+        this.ComputePlayerRotation(horizontalFactor);
+
+        float cutlassDirection = (Mathf.Abs(horizontalFactor) > 1e-5f)
+            ? horizontalFactor
+            : body.velocity.x;
+        this.ComputeCutlass(cutlassDirection);
     }
 
-    void SetPlayerFacingDirection(float inputHorizontalFactor)
+    void ComputePlayerFacingDirection(float inputHorizontalFactor)
     {
         Vector2 localScale = new Vector2((inputHorizontalFactor >= 0.0f)
             ? Mathf.Abs(playerTransform.localScale.x)
@@ -93,7 +110,7 @@ public class GameplayController : MonoBehaviour
         playerTransform.localScale = localScale;
     }
 
-    void SetPlayerRotation(float inputHorizontalFactor)
+    void ComputePlayerRotation(float inputHorizontalFactor)
     {
         playerPositionPrevious = isPlayerPositionPreviousInitialized
             ? playerTransform.position
@@ -116,5 +133,30 @@ public class GameplayController : MonoBehaviour
         Quaternion target = Quaternion.Euler(0.0f, 0.0f, tiltAroundZ);
 
         playerTransform.rotation = (playerTransform.rotation * target).normalized;
+    }
+
+    void ComputeCutlass(float horizontalFactor)
+    {
+        Vector3 offset = new Vector3((horizontalFactor >= 0.0f) ? 2.5f : -2.5f, 0.0f, 0.0f);
+        cutlass.transform.position = playerTransform.position + offset;
+        cutlass.transform.localScale = new Vector2((horizontalFactor >= 0.0f)
+            ? Mathf.Abs(cutlass.transform.localScale.x)
+            : -Mathf.Abs(cutlass.transform.localScale.x),
+            1.0f);
+
+        if (isCutlassRequested)
+        {
+            isCutlassRequested = false;
+            cutlassTicksSinceRequest = 0;
+            cutlass.SetActive(true);
+        }
+
+
+        if (cutlassTicksSinceRequest == cutlassDurationTicks)
+        {
+            cutlass.SetActive(false);
+        }
+
+        cutlassTicksSinceRequest = Mathf.Min(cutlassTicksSinceRequest + 1, cutlassDurationTicks);
     }
 }
