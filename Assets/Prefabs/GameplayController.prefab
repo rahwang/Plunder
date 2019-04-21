@@ -43,15 +43,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dd935f817b4d0342b4f446309167c97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTransform: {fileID: 0}
+  playerPhysicsTransform: {fileID: 0}
+  playerRenderingTransform: {fileID: 0}
   body: {fileID: 0}
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 0
+  cutlass: {fileID: 0}
   inputNameJump: Jump
   inputTriggerNameJump: Jump
   inputNameHorizontal: Horizontal
+  inputNameFire1: Fire1
   playerForceMovement: 365
   playerForceJump: 1000
   playerVelocityMax: 5
-  playerRadius: 1
+  playerRadius: 0.5
+  grappleManager: {fileID: 0}
+  cutlassOffset: 1
+  cutlassDurationTicks: 30
