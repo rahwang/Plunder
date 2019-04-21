@@ -14,6 +14,13 @@ public class AudioController : MonoBehaviour
     public AudioSource mainSource;
     public AudioSource auxSource;
 
+    void Update() {
+        var x = Random.value;
+        if (x > 0.995f) {
+            playYar();
+        }
+    }
+
     void playWin()
     {
         this.mainSource.clip = winClip;
