@@ -9,6 +9,7 @@ public class GrappleManager : MonoBehaviour
     public float ropeLength;
     public bool isGrappling = false;
     List<GrapplePoint> validGrapplingPoints = new List<GrapplePoint>();
+    public GameObject ropeObject;
     public GrapplePoint activeGrapplePoint;
 
     // Start is called before the first frame update
@@ -32,6 +33,27 @@ public class GrappleManager : MonoBehaviour
                 this.activeGrapplePoint.GetComponent<SpriteRenderer>().color = colorActive;
             }
         }
+        else
+        {
+
+        }
+    }
+
+    public void UpdateRopeTransform(Vector2 newPlayerPosition)
+    {
+        Vector2 grapplePointPosition = GetGrapplePointPosition();
+        Vector2 ropeDirection = (newPlayerPosition - grapplePointPosition).normalized;
+        Vector2 newPos = grapplePointPosition + ropeDirection * this.ropeLength * 0.5f;
+        this.ropeObject.transform.position = new Vector3(newPos.x, newPos.y, -10.0f);
+
+        var angle = Vector2.Angle(ropeDirection, -Vector3.up);
+        if (Mathf.Sign(Vector2.Dot(ropeDirection, Vector2.right)) < 0)
+        {
+            angle *= -1f;
+        } else {
+            angle += 180;
+        }
+        this.ropeObject.transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle);
     }
 
     public Vector2 GetGrapplePointPosition() {
@@ -55,12 +77,16 @@ public class GrappleManager : MonoBehaviour
             this.activeGrapplePoint.GetComponent<SpriteRenderer>().color = colorActive;
             
             var playerPos2 = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
+            
+            this.ropeObject.SetActive(true);
             this.ropeLength = (playerPos2 - GetGrapplePointPosition()).magnitude;
+            this.ropeObject.transform.localScale = Vector3.one * this.ropeLength;
         }
     }
 
     void UnGrapple() {
         this.isGrappling = false;
+        this.ropeObject.SetActive(false);
     }
 
     void ComputePlayerPosition() {
