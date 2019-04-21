@@ -31,6 +31,8 @@ public class GameplayController : MonoBehaviour
     public int cutlassDurationTicks = 30;
     private int cutlassTicksSinceRequest = 0;
 
+    private bool playerIsFacingRight = true;
+
     void Awake()
     {
 
@@ -60,6 +62,9 @@ public class GameplayController : MonoBehaviour
     void FixedUpdate()
     {
         float horizontalFactor = Input.GetAxis(inputNameHorizontal);
+
+        // Update player facing direction only on input.
+        if (Mathf.Abs(horizontalFactor) > 1e-5f) { this.playerIsFacingRight = (horizontalFactor >= 0.0f); }
 
         if (this.grappleManager.isGrappling)
         {
@@ -94,21 +99,14 @@ public class GameplayController : MonoBehaviour
             isJumpRequested = false;
         }
 
-        this.ComputePlayerFacingDirection(horizontalFactor);
-        this.ComputePlayerRotation(horizontalFactor);
-
-        float cutlassDirection = (Mathf.Abs(horizontalFactor) > 1e-5f)
-            ? horizontalFactor
-            : body.velocity.x;
-        this.ComputeCutlass(cutlassDirection);
+        this.ComputePlayerFacingDirection();
+        this.ComputePlayerRotation();
+        this.ComputeCutlass();
     }
 
-    void ComputePlayerFacingDirection(float inputHorizontalFactor)
+    void ComputePlayerFacingDirection()
     {
-        // Do not update facing direction if no new input has been triggered.
-        if (Mathf.Abs(inputHorizontalFactor) < 1e-5f) { return; }
-
-        Vector2 localScale = new Vector2((inputHorizontalFactor >= 0.0f)
+        Vector2 localScale = new Vector2(this.playerIsFacingRight
             ? Mathf.Abs(playerRenderingTransform.localScale.x)
             : -Mathf.Abs(playerRenderingTransform.localScale.x),
             playerRenderingTransform.localScale.y
@@ -116,7 +114,7 @@ public class GameplayController : MonoBehaviour
         playerRenderingTransform.localScale = localScale;
     }
 
-    void ComputePlayerRotation(float inputHorizontalFactor)
+    void ComputePlayerRotation()
     {
         playerPositionPrevious = isPlayerPositionPreviousInitialized
             ? playerPositionPrevious
@@ -129,7 +127,7 @@ public class GameplayController : MonoBehaviour
 
         Debug.Assert(playerCircumference > 0.0f);
         float playerRotationDelta = 2.0f * Mathf.PI * playerDistanceTraveled / playerCircumference;
-        playerRotationDelta = (inputHorizontalFactor >= 0.0f)
+        playerRotationDelta = this.playerIsFacingRight
             ? -playerRotationDelta
             : playerRotationDelta;
 
@@ -137,11 +135,11 @@ public class GameplayController : MonoBehaviour
         playerRenderingTransform.rotation = (playerRenderingTransform.rotation * target).normalized;
     }
 
-    void ComputeCutlass(float horizontalFactor)
+    void ComputeCutlass()
     {
-        Vector3 offset = new Vector3((horizontalFactor >= 0.0f) ? 2.5f : -2.5f, 0.0f, 0.0f);
+        Vector3 offset = new Vector3(this.playerIsFacingRight ? 2.5f : -2.5f, 0.0f, 0.0f);
         cutlass.transform.position = playerPhysicsTransform.position + offset;
-        cutlass.transform.localScale = new Vector2((horizontalFactor >= 0.0f)
+        cutlass.transform.localScale = new Vector2(this.playerIsFacingRight
             ? Mathf.Abs(cutlass.transform.localScale.x)
             : -Mathf.Abs(cutlass.transform.localScale.x),
             1.0f);
