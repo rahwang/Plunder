@@ -4,13 +4,15 @@ using UnityEngine;
 public class StateManager : MonoBehaviour
 {
     enum GameState {Play, Death, Win, Title};
-
+    public static int numEnemiesAlive;
     bool m_SceneLoaded;
     public string inputNameSubmit = "Submit";
+
     GameState currentState;
     // Start is called before the first frame update
     void Start()
     {
+        numEnemiesAlive = 0;
         switch(SceneManager.GetActiveScene().name){
             case "Title Screen":
                 print("Active scene is " + SceneManager.GetActiveScene().name);

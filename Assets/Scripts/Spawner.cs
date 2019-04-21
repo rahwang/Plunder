@@ -17,6 +17,7 @@ public class Spawner : MonoBehaviour
         y += (float)0.3;
 
         Instantiate(sailorPrefab, new Vector3(x, y, z), Quaternion.identity);
+        StateManager.numEnemiesAlive++;
     }
 
     // Update is called once per frame
