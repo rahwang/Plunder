@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d9b62a42d9582c4b89d290a88d74e6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sailorPrefab: {fileID: 8211148966400946270, guid: 9243c02f9c7ecb74cbdf15ff62a6e999,
+  sailorPrefab: {fileID: 5786989528267650510, guid: 2e77b699ddf33e146a513ab8e58e764d,
     type: 3}
 --- !u!1 &8228840928656906130
 GameObject:
