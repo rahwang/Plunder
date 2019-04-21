@@ -54,7 +54,6 @@ public class GameplayController : MonoBehaviour
         {
             isJumpRequested = true;
         }
-
         if (Input.GetKeyDown(KeyCode.F)) {
 
             grappleManager.ToggleGrapple();
