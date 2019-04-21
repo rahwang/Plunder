@@ -20,7 +20,9 @@ public class Spawner : MonoBehaviour
 
         y += (float)0.3;
 
-        Instantiate(sailorPrefab, new Vector3(x, y, z), Quaternion.identity);
+        GameObject sailor = Instantiate(sailorPrefab, new Vector3(x, y, z), Quaternion.identity);
+        // Make sure sailor is a child of the boat so that they sway with the boat.
+        sailor.transform.parent = this.transform.parent;
         StateManager.numEnemiesAlive++;
     }
 
