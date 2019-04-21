@@ -33,6 +33,12 @@ public class SailorController : MonoBehaviour
             float z = this.transform.position.z;
 
             GameObject blood = Instantiate(bloodPrefab, new Vector3(x, y, z)  ,Quaternion.identity);
+            Vector3 newTrans = blood.transform.localScale;
+            if(!GameplayController.playerIsFacingRight)
+            {
+                newTrans.x *= -1;
+            }
+            blood.transform.localScale = newTrans;
             blood.transform.parent = this.transform;
         }
     }
