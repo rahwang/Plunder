@@ -6,7 +6,6 @@ public class StateManager : MonoBehaviour
     enum GameState {Play, Death, Win, Title};
     public static int numEnemiesAlive;
 
-    bool activeGame = false;
     bool m_SceneLoaded;
     public string inputNameSubmit = "Submit";
 
@@ -14,64 +13,96 @@ public class StateManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("START");
         numEnemiesAlive = 0;
-        switch(SceneManager.GetActiveScene().name){
-            case "Title Screen":
-                print("Active scene is " + SceneManager.GetActiveScene().name);
-                currentState = GameState.Title;
-                break;
-            default:
-                break;
+        this.EnterTitle();
+    }
+
+    void EnterTitle()
+    {
+        Debug.Log("Entering title");
+        currentState = GameState.Title;
+        if (SceneManager.GetActiveScene().name != "Title Screen")
+        {
+            SceneManager.LoadScene("Title Screen", LoadSceneMode.Additive);
         }
     }
 
-    void Play(){
+    void Title()
+    {
+        if (Input.GetButtonDown(inputNameSubmit))
+        {
+            SceneManager.UnloadSceneAsync("Title Screen");
+            this.EnterPlay();
+        }
+    }
+
+    void EnterPlay()
+    {
+        currentState = GameState.Play;
         print("Starting Game");
         // set scene to shiplevel
         SceneManager.LoadScene("ShipLevel", LoadSceneMode.Additive);
         // play music looping?
-        currentState = GameState.Play;
     }
 
-    void Win(){
-        print("you win!!");
+    void Play()
+    {
+        // TODO: Test Death here.
+
+
+        if (numEnemiesAlive <= 0)
+        {
+            this.EnterWin();
+        }
+
+    }
+
+    void EnterWin()
+    {
         currentState = GameState.Win;
+        print("you win!!");
+        SceneManager.UnloadSceneAsync("ShipLevel");
+        SceneManager.LoadScene("Win Screen");
+    }
+
+    void Win()
+    {
         // play victory theme
+        if (Input.GetButtonDown(inputNameSubmit))
+        {
+            SceneManager.UnloadSceneAsync("Win Screen");
+            this.EnterTitle();
+        }
     }
 
-    void Death(){
+    void EnterDeath()
+    {
         currentState = GameState.Death;
-        // play death theme
+        SceneManager.UnloadSceneAsync("ShipLevel");
+        SceneManager.LoadScene("Death Screen");
     }
 
-    void Title(){
-        currentState = GameState.Title;
+    void Death()
+    {
+        if (Input.GetButtonDown(inputNameSubmit))
+        {
+            SceneManager.UnloadSceneAsync("Death Screen");
+            this.EnterTitle();
+        }
     }
+
 
     // Update is called once per frame
     void Update()
     {
-        if(numEnemiesAlive>0 && !activeGame){
-            activeGame = true;
-        }
-        if(numEnemiesAlive == 0 && activeGame){
-            Win();
-        }
-
-        switch (currentState){
-            case GameState.Title:
-            {
-                if (Input.GetButtonDown(inputNameSubmit)){
-                    Play();
-                }
-                break;
-            }
-            default:
-            {
-                break;
-            }
-
-            
+        switch (currentState)
+        {
+            case GameState.Title: this.Title(); return;
+            case GameState.Play: this.Play(); return;
+            case GameState.Death: this.Death(); return;
+            case GameState.Win: this.Win(); return;
+            default: Debug.Assert(false); return;
         }
     }
 }
