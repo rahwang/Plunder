@@ -106,7 +106,7 @@ public class GameplayController : MonoBehaviour
         float tiltAroundX = Input.GetAxis("Horizontal") * playerRotationDelta;
         float tiltAroundZ = Input.GetAxis("Vertical") * playerRotationDelta;
 
-        Quaternion target = Quaternion.Euler(tiltAroundX, 0.0f, tiltAroundZ);
+        Quaternion target = Quaternion.Euler(0.0f, 0.0f, tiltAroundZ);
 
         playerTransform.rotation = (playerTransform.rotation * target).normalized;
     }
