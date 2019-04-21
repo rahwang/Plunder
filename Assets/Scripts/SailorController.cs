@@ -22,8 +22,8 @@ public class SailorController : MonoBehaviour
             Vector3 oldPos = gameObject.transform.position;
             oldPos.y -= 0.5f;
             gameObject.transform.position = oldPos;
-            // gameObject.SetActive(false);
-            // Destroy(gameObject);
+            gameObject.GetComponent<Rigidbody2D>().simulated = false;
+            gameObject.GetComponent<CircleCollider2D>().enabled = false;
             StateManager.numEnemiesAlive--;
             float velocity = GameplayController.GetVelocity().magnitude;
             Score.Kill(velocity);
