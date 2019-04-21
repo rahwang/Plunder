@@ -69,16 +69,21 @@ public class GameplayController : MonoBehaviour
         if (this.grappleManager.isGrappling)
         {
             this.body.simulated = false;
-            Vector2 playerPos = new Vector2(playerTransform.position.x, playerTransform.position.y);
+            Vector2 playerPos = new Vector2(this.playerPhysicsTransform.position.x, this.playerPhysicsTransform.position.y);
             Vector2 currentVelocity = this.body.velocity;
             Vector2 newPosition = playerPos + currentVelocity * Time.deltaTime;
             Vector2 grapplePointPosition = this.grappleManager.GetGrapplePointPosition();
             Vector2 ropeDirection = (newPosition - grapplePointPosition).normalized;
             newPosition = grapplePointPosition + ropeDirection * grappleManager.ropeLength;
-            var newVelocity = new Vector2(-ropeDirection.y, ropeDirection.x) * this.body.velocity.magnitude;
-            //this.body.velocity = newVelocity;
-            Debug.LogWarning(" prev " + playerTransform.position + " new " + newPosition);
-            this.playerTransform.position = new Vector3(newPosition.x, newPosition.y, this.playerTransform.position.z);
+            this.playerPhysicsTransform.position = new Vector3(newPosition.x, newPosition.y, this.playerPhysicsTransform.position.z);
+            
+            var newDirection = new Vector2(-ropeDirection.y, ropeDirection.x);
+            if (Vector2.Dot(newDirection, this.body.velocity) < 0)
+            {
+                newDirection *= -1;
+            }
+            var newVelocity =  newDirection * this.body.velocity.magnitude;
+            this.body.velocity = newVelocity;
         }
         else
         {
