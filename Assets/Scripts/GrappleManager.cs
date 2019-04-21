@@ -6,9 +6,10 @@ public class GrappleManager : MonoBehaviour
 {
     public Color colorActive;
     public Color colorDefault;
+    public float ropeLength;
     public bool isGrappling = false;
     List<GrapplePoint> validGrapplingPoints = new List<GrapplePoint>();
-    GrapplePoint activeGrapplePoint;
+    public GrapplePoint activeGrapplePoint;
 
     // Start is called before the first frame update
     void Start()
@@ -24,12 +25,18 @@ public class GrappleManager : MonoBehaviour
                 this.activeGrapplePoint.GetComponent<SpriteRenderer>().color = colorDefault;
             }
 
+            // highlight the grapple point that will be selected
             var newActiveGrapplePoint = GetActiveGrapplePoint();
             if (newActiveGrapplePoint != null) {
                 this.activeGrapplePoint = newActiveGrapplePoint;
                 this.activeGrapplePoint.GetComponent<SpriteRenderer>().color = colorActive;
             }
         }
+    }
+
+    public Vector2 GetGrapplePointPosition() {
+        var pos3 = this.activeGrapplePoint.gameObject.transform.position;
+        return new Vector2(pos3.x, pos3.y);
     }
 
     public void ToggleGrapple() {
@@ -46,6 +53,9 @@ public class GrappleManager : MonoBehaviour
             this.isGrappling = true;
             this.activeGrapplePoint = activeGrapplePoint;
             this.activeGrapplePoint.GetComponent<SpriteRenderer>().color = colorActive;
+            
+            var playerPos2 = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
+            this.ropeLength = (playerPos2 - GetGrapplePointPosition()).magnitude;
         }
     }
 
