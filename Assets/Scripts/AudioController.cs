@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class AudioController : MonoBehaviour
 {
-    public AudioClip deathClip;
-    public AudioClip winClip;
     public AudioClip cutlassClip;
     public AudioClip yarClip;
     public AudioClip yarrClip;
@@ -19,20 +17,6 @@ public class AudioController : MonoBehaviour
         if (x > 0.995f) {
             playYar();
         }
-    }
-
-    void playWin()
-    {
-        this.mainSource.clip = winClip;
-        this.mainSource.Play();
-        this.mainSource.loop = false;
-    }
-
-    void playDeath()
-    {
-        this.mainSource.clip = deathClip;
-        this.mainSource.Play();
-        this.mainSource.loop = false;
     }
 
     void playYar()
