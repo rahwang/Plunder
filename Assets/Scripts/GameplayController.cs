@@ -11,6 +11,7 @@ public class GameplayController : MonoBehaviour
     public Rigidbody2D body = null;
     public LayerMask groundLayerMask = 0;
     public GameObject cutlass = null;
+    public static bool isDead = false;
 
     public string inputNameJump = "Jump";
     public string inputTriggerNameJump = "Jump";
@@ -128,6 +129,10 @@ public class GameplayController : MonoBehaviour
 
             if (isJumpRequested && isGrounded) { body.AddForce(new Vector2(0.0f, playerForceJump)); }
             isJumpRequested = false;
+
+            if (playerPhysicsTransform.position.y < -15.0f) {
+                GameplayController.isDead = true;
+            }
         }
 
         this.ComputePlayerFacingDirection();
