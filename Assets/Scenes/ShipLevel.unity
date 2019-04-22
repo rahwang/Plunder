@@ -3017,11 +3017,6 @@ PrefabInstance:
       propertyPath: auxSource2
       value: 
       objectReference: {fileID: 542467388}
-    - target: {fileID: 7266663172877217953, guid: 8bbadaaf3a768f242bfca2edf045fd10,
-        type: 3}
-      propertyPath: m_Name
-      value: AuxAudio Yar
-      objectReference: {fileID: 0}
     - target: {fileID: 7266663172877217952, guid: 8bbadaaf3a768f242bfca2edf045fd10,
         type: 3}
       propertyPath: BypassListenerEffects
@@ -3036,6 +3031,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Volume
       value: 0.779
+      objectReference: {fileID: 0}
+    - target: {fileID: 7266663172877217953, guid: 8bbadaaf3a768f242bfca2edf045fd10,
+        type: 3}
+      propertyPath: m_Name
+      value: AuxAudio Yar
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8bbadaaf3a768f242bfca2edf045fd10, type: 3}
@@ -9940,7 +9940,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 3d799767add0f1f4b8214a3657125970, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f8b98fcea00e30d40be61e062bd81cbc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
